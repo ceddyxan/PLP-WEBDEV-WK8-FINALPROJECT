@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - Datox Packaging</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div class="logo">
+    <img src="images/datox.png" alt="PackagingShop Logo"/>
+      <h1>Datox Packaging &amp; Supplies</h1>
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="cart.html">Cart (<span id="cartCount">0</span>)</a>
+      <a href="profile.html" id="navUser" style="display:none;"></a>
+      <a href="login.html" id="loginLink" class="active">Login</a>
+      <a href="signup.html" id="signupLink">Sign Up</a>
+      <button id="logoutBtn" style="display:none;">Logout</button>
+    </nav>
+    <button id="darkModeToggle" title="Toggle Dark Mode">🌙</button>
+  </header>
+
+  <main>
+    <h1>Login to Your Account</h1>
+    <form id="loginForm" novalidate>
+      <label for="loginUsername">Username</label>
+      <input type="text" id="loginUsername" name="loginUsername" required />
+
+      <label for="loginPassword">Password</label>
+      <input type="password" id="loginPassword" name="loginPassword" required />
+
+      <button type="submit" class="btn">Login</button>
+    </form>
+  </main>
+
+  <footer>
+    <p>Your trusted online store for top-quality packaging products.</p>
+    <p>For inquiries, partnerships, or feedback, visit our <a href="contact.html">Contact</a> page
+    <p>© 2025 Datox Packaging &amp; Supplies. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

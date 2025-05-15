@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Checkout - Datox Packaging</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Quick enhancements, move to styles.css for production */
+    main {
+      max-width: 700px;
+      margin: 2em auto;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px #0001;
+      padding: 2em;
+    }
+    fieldset {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 1.5em;
+      padding: 1em 1.5em;
+    }
+    legend {
+      font-weight: bold;
+      color: #2a7d46;
+    }
+    table {
+      width: 100%;
+    }
+    td {
+      padding: 0.5em 0.3em;
+      vertical-align: top;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 0.5em;
+      border-radius: 5px;
+      border: 1px solid #bbb;
+      font-size: 1em;
+      transition: border 0.2s;
+    }
+    input[type="text"]:focus, textarea:focus {
+      border: 1.5px solid #2a7d46;
+      outline: none;
+    }
+    .payment-option {
+      display: flex;
+      align-items: center;
+      padding: 0.5em 0.7em;
+      border-radius: 6px;
+      border: 1.5px solid #ccc;
+      margin-bottom: 0.7em;
+      cursor: pointer;
+      transition: border 0.2s, background 0.2s;
+      background: #fafafa;
+    }
+    .payment-option.selected {
+      border: 2px solid #2a7d46;
+      background: #eafbee;
+    }
+    .payment-option input[type="radio"] {
+      margin-right: 0.7em;
+      accent-color: #2a7d46;
+    }
+    .btn {
+      background: #2a7d46;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 0.8em 2em;
+      font-size: 1.1em;
+      cursor: pointer;
+      margin-top: 1em;
+      transition: background 0.2s;
+    }
+    .btn:hover {
+      background: #256d3b;
+    }
+    .order-summary {
+      background: #f6f6f6;
+      border-radius: 8px;
+      padding: 1em 1.5em;
+      margin-bottom: 1.5em;
+      border: 1px solid #e0e0e0;
+    }
+    .order-summary h2 {
+      margin-top: 0;
+      color: #2a7d46;
+    }
+    .validation-error {
+      color: #c00;
+      font-size: 0.95em;
+      margin-top: 0.2em;
+    }
+  </style>
+</head>
+<body>
+  <header>
+   <div class="logo">
+    <img src="images/datox.png" alt="PackagingShop Logo"/>
+      <h1>Datox Packaging &amp; Supplies</h1>
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="cart.html">Cart (<span id="cartCount">0</span>)</a>
+      <a href="profile.html" id="navUser" style="display:none;"></a>
+      <a href="login.html" id="loginLink">Login</a>
+      <a href="signup.html" id="signupLink">Sign Up</a>
+      <button id="logoutBtn" style="display:none;">Logout</button>
+    </nav>
+    <button id="darkModeToggle" title="Toggle Dark Mode">🌙</button>
+  </header>
+
+  <main>
+  <h1 style="text-align:center;margin-bottom:1em;">Checkout</h1>
+  <div id="orderSummary" class="order-summary" style="display:none;"></div>
+  <form id="checkoutForm" novalidate autocomplete="off" style="max-width:400px;margin:0 auto;background:#fff;border-radius:12px;box-shadow:0 2px 12px #0001;padding:1.5em;">
+    <fieldset style="border:none;padding:0;margin-bottom:1.2em;">
+      <legend style="font-weight:bold;color:#2a7d46;margin-bottom:0.7em;">Shipping Info</legend>
+      <div style="margin-bottom:0.8em;">
+        <label for="fullName" style="display:block;font-weight:500;">Full Name</label>
+        <input type="text" id="fullName" name="fullName" required style="width:100%;padding:0.5em;border-radius:5px;border:1px solid #bbb;">
+        <div class="validation-error" id="errFullName"></div>
+      </div>
+      <div style="margin-bottom:0.8em;">
+        <label for="address" style="display:block;font-weight:500;">Address</label>
+        <textarea id="address" name="address" rows="2" required style="width:100%;padding:0.5em;border-radius:5px;border:1px solid #bbb;"></textarea>
+        <div class="validation-error" id="errAddress"></div>
+      </div>
+      <div style="display:flex;gap:0.7em;">
+        <div style="flex:1;">
+          <label for="city" style="display:block;font-weight:500;">City</label>
+          <input type="text" id="city" name="city" required style="width:100%;padding:0.5em;border-radius:5px;border:1px solid #bbb;">
+          <div class="validation-error" id="errCity"></div>
+        </div>
+        <div style="flex:1;">
+          <label for="postalCode" style="display:block;font-weight:500;">Postal Code</label>
+          <input type="text" id="postalCode" name="postalCode" required pattern="^[0-9]{4,10}$" style="width:100%;padding:0.5em;border-radius:5px;border:1px solid #bbb;">
+          <div class="validation-error" id="errPostal"></div>
+        </div>
+      </div>
+      <div style="margin-top:0.8em;">
+        <label for="country" style="display:block;font-weight:500;">Country</label>
+        <input type="text" id="country" name="country" required style="width:100%;padding:0.5em;border-radius:5px;border:1px solid #bbb;">
+        <div class="validation-error" id="errCountry"></div>
+      </div>
+    </fieldset>
+
+    <fieldset style="border:none;padding:0;margin-bottom:1.2em;">
+      <legend style="font-weight:bold;color:#2a7d46;margin-bottom:0.7em;">Payment Method</legend>
+      <div id="paymentOptions" style="display:flex;flex-direction:column;gap:0.6em;">
+        <label class="payment-option" style="display:flex;align-items:center;gap:0.7em;padding:0.6em 1em;border-radius:7px;border:1.5px solid #ccc;cursor:pointer;transition:all 0.2s;background:#fafafa;">
+          <input type="radio" name="paymentMethod" value="creditCard" required />
+          <span>Credit Card</span>
+        </label>
+        <label class="payment-option" style="display:flex;align-items:center;gap:0.7em;padding:0.6em 1em;border-radius:7px;border:1.5px solid #ccc;cursor:pointer;transition:all 0.2s;background:#fafafa;">
+          <input type="radio" name="paymentMethod" value="paypal" />
+          <span>PayPal</span>
+        </label>
+        <label class="payment-option" style="display:flex;align-items:center;gap:0.7em;padding:0.6em 1em;border-radius:7px;border:1.5px solid #ccc;cursor:pointer;transition:all 0.2s;background:#fafafa;">
+          <input type="radio" name="paymentMethod" value="cod" />
+          <span>Cash on Delivery</span>
+        </label>
+      </div>
+      <div class="validation-error" id="errPayment"></div>
+    </fieldset>
+
+    <button type="submit" class="btn" style="width:100%;margin-top:1em;">Place Order</button>
+  </form>
+</main>
+
+<style>
+  .order-summary {
+    background: #f6f6f6;
+    border-radius: 8px;
+    padding: 1em 1.5em;
+    margin: 1em auto 1.5em auto;
+    border: 1px solid #e0e0e0;
+    max-width: 400px;
+    font-size: 1em;
+  }
+  .order-summary h2 {
+    margin-top: 0;
+    color: #2a7d46;
+    font-size: 1.1em;
+  }
+  .validation-error {
+    color: #c00;
+    font-size: 0.95em;
+    margin-top: 0.2em;
+    min-height: 1.2em;
+  }
+  .payment-option.selected {
+    border: 2px solid #2a7d46 !important;
+    background: #eafbee !important;
+  }
+  @media (max-width: 600px) {
+    main, .order-summary { max-width: 98vw !important; padding: 1em !important; }
+    form { padding: 1em !important; }
+  }
+</style>
+
+<script>
+  // Highlight selected payment method
+  document.querySelectorAll('.payment-option input[type="radio"]').forEach(input => {
+    input.addEventListener('change', function() {
+      document.querySelectorAll('.payment-option').forEach(opt => opt.classList.remove('selected'));
+      if (this.checked) this.parentElement.classList.add('selected');
+    });
+  });
+
+  // Live order summary (if cart is available in localStorage)
+  function showOrderSummary() {
+    const orderDiv = document.getElementById('orderSummary');
+    if (!orderDiv) return;
+    let cart = [];
+    try {
+      cart = JSON.parse(localStorage.getItem('cart')) || [];
+    } catch {}
+    if (!cart.length) {
+      orderDiv.style.display = 'none';
+      return;
+    }
+    let subtotal = cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
+    let vat = subtotal * 0.16;
+    let total = subtotal + vat;
+    let html = `<h2>Order Summary</h2><ol style="padding-left:1em;">`;
+    cart.forEach((item, idx) => {
+      html += `<li>${item.name} x ${item.quantity || 1} - Kshs.${(item.price * (item.quantity || 1)).toFixed(2)}</li>`;
+    });
+    html += `</ol>
+      <p><strong>Subtotal:</strong> Kshs.${subtotal.toFixed(2)}</p>
+      <p><strong>VAT (16%):</strong> Kshs.${vat.toFixed(2)}</p>
+      <p><strong>Total:</strong> Kshs.${total.toFixed(2)}</p>`;
+    orderDiv.innerHTML = html;
+    orderDiv.style.display = 'block';
+  }
+  showOrderSummary();
+
+  // Simple validation feedback and receipt printing
+  document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+    let valid = true;
+    // Clear errors
+    ['errFullName','errAddress','errCity','errPostal','errCountry','errPayment'].forEach(id => {
+      document.getElementById(id).textContent = '';
+    });
+
+    if (!this.fullName.value.trim()) {
+      document.getElementById('errFullName').textContent = 'Full name is required.';
+      valid = false;
+    }
+    if (!this.address.value.trim()) {
+      document.getElementById('errAddress').textContent = 'Address is required.';
+      valid = false;
+    }
+    if (!this.city.value.trim()) {
+      document.getElementById('errCity').textContent = 'City is required.';
+      valid = false;
+    }
+    if (!this.postalCode.value.trim() || !/^[0-9]{4,10}$/.test(this.postalCode.value.trim())) {
+      document.getElementById('errPostal').textContent = 'Valid postal code is required.';
+      valid = false;
+    }
+    if (!this.country.value.trim()) {
+      document.getElementById('errCountry').textContent = 'Country is required.';
+      valid = false;
+    }
+    if (![...this.paymentMethod].some(r => r.checked)) {
+      document.getElementById('errPayment').textContent = 'Please select a payment method.';
+      valid = false;
+    }
+    if (!valid) {
+      e.preventDefault();
+      return;
+    }
+
+    // --- Print receipt and clear order summary ---
+    e.preventDefault(); // Prevent default form submission
+
+    // Get cart and totals
+    let cart = [];
+    try {
+      cart = JSON.parse(localStorage.getItem('cart')) || [];
+    } catch {}
+    let subtotal = cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
+    let vat = subtotal * 0.16;
+    let total = subtotal + vat;
+
+    // Prepare receipt HTML
+    let receipt = `<h2>Order Receipt</h2>
+      <p><strong>Name:</strong> ${this.fullName.value}</p>
+      <p><strong>Address:</strong> ${this.address.value}, ${this.city.value}, ${this.postalCode.value}, ${this.country.value}</p>
+      <p><strong>Payment Method:</strong> ${[...this.paymentMethod].find(r => r.checked).value}</p>
+      <hr>
+      <h3>Items:</h3>
+      <ol>`;
+    cart.forEach(item => {
+      receipt += `<li>${item.name} x ${item.quantity || 1} - Kshs.${(item.price * (item.quantity || 1)).toFixed(2)}</li>`;
+    });
+    receipt += `</ol>
+      <p><strong>Subtotal:</strong> Kshs.${subtotal.toFixed(2)}</p>
+      <p><strong>VAT (16%):</strong> Kshs.${vat.toFixed(2)}</p>
+      <p><strong>Total:</strong> Kshs.${total.toFixed(2)}</p>
+      <p>Thank you for shopping with us!</p>`;
+
+    // Print receipt in a new window
+    const printWindow = window.open('', '', 'width=600,height=600');
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Order Receipt</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 2em; }
+            h2, h3 { margin-top: 0; }
+            ol { margin-bottom: 1em; }
+          </style>
+        </head>
+        <body>
+          ${receipt}
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+
+    // Clear cart and order summary
+    localStorage.removeItem('cart');
+    document.getElementById('orderSummary').innerHTML = '';
+    document.getElementById('orderSummary').style.display = 'none';
+
+    // Optionally, show a message or redirect
+    alert('Order placed successfully!');
+    window.location.href = 'index.html';
+  });
+</script>
+<footer>
+    <p>Your trusted online store for top-quality packaging products.</p>
+    <p>For inquiries, partnerships, or feedback, visit our <a href="contact.html">Contact</a> page
+    <p>© 2025 Datox Packaging &amp; Supplies. All rights reserved.</p>
+</footer>
+</body>
+</html>

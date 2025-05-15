@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Shopping Cart - Datox Packaging</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .cart-summary {
+      background: #f6f6f6;
+      border-radius: 8px;
+      padding: 1em 1.5em;
+      margin: 1.5em auto 1em auto;
+      border: 1px solid #e0e0e0;
+      max-width: 400px;
+      font-size: 1em;
+      text-align: center;
+    }
+    .cart-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5em;
+      margin-bottom: 2em;
+    }
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 1em;
+      border-bottom: 1px solid #eee;
+      padding: 1em 0;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px #0001;
+    }
+    .cart-item img {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 8px;
+      background: #fafafa;
+    }
+    .cart-info {
+      flex: 1;
+    }
+    .cart-info h3 {
+      margin: 0 0 0.3em 0;
+      font-size: 1.1em;
+      color: #2a7d46;
+    }
+    .cart-info p {
+      margin: 0.2em 0;
+      font-size: 0.98em;
+    }
+    .remove-btn {
+      background: #c00;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 0.4em 1em;
+      cursor: pointer;
+      font-size: 0.95em;
+      margin-top: 0.5em;
+      transition: background 0.2s;
+    }
+    .remove-btn:hover {
+      background: #a00;
+    }
+    .empty-cart {
+      text-align: center;
+      margin: 2em 0;
+      color: #888;
+    }
+    .btn.checkout-btn {
+      background: #2a7d46;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 0.7em 2em;
+      font-size: 1.1em;
+      margin-top: 1em;
+      display: inline-block;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn.checkout-btn:hover {
+      background: #256d3b;
+    }
+    @media (max-width: 600px) {
+      .cart-summary { max-width: 98vw; padding: 1em; }
+      .cart-grid { grid-template-columns: 1fr; gap: 1em; }
+      .cart-item { flex-direction: column; align-items: flex-start; }
+      .cart-item img { width: 100%; height: auto; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+    <img src="images/datox.png" alt="PackagingShop Logo"/>
+      <h1>Datox Packaging &amp; Supplies</h1>
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="cart.html" class="active">Cart (<span id="cartCount">0</span>)</a>
+      <a href="profile.html" id="navUser" style="display:none;"></a>
+      <a href="login.html" id="loginLink">Login</a>
+      <a href="signup.html" id="signupLink">Sign Up</a>
+      <button id="logoutBtn" style="display:none;">Logout</button>
+    </nav>
+    <button id="darkModeToggle" title="Toggle Dark Mode">🌙</button>
+  </header>
+
+  <main>
+    <h1 style="text-align:center;margin-bottom:1em;">Your Cart</h1>
+
+    <div id="cartContainer" class="cart-grid" style="min-height:100px;">
+      <!-- Cart items will be rendered here by script.js -->
+    </div>
+
+    <div id="cartSummary" class="cart-summary" style="display:none;">
+      <p>
+        <strong>Subtotal:</strong> Kshs.<span id="cartSubtotal">0.00</span>
+        <label style="margin-left:1em;font-weight:normal;font-size:0.98em;">
+          <input type="checkbox" id="vatToggle" checked style="vertical-align:middle;margin-right:0.3em;">
+          Apply 16% VAT
+        </label>
+      </p>
+      <p><strong>VAT (16%):</strong> Kshs.<span id="cartVAT">0.00</span></p>
+      <p><strong>Total:</strong> Kshs.<span id="cartTotal">0.00</span></p>
+      <a href="checkout.html" class="btn checkout-btn">Proceed to Checkout</a>
+    </div>
+
+    <div id="emptyCartMessage" class="empty-cart" style="display:none;">
+      <p>Your cart is empty.</p>
+      <a href="products.html" class="btn checkout-btn">Shop Now</a>
+    </div>
+  </main>
+
+  <footer>
+    <p>Your trusted online store for top-quality packaging products.</p>
+    <p>For inquiries, partnerships, or feedback, visit our <a href="contact.html">Contact</a> page
+    <p>© 2025 Datox Packaging &amp; Supplies. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
